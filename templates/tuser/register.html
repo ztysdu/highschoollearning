@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+{#头部#}
+
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>注册</title>
+    <link rel="stylesheet" type="text/css" href="http://getuikit.dev-tang.com/skin/ukv3/css/theme.css?3.5.3" />
+    <script src="http://getuikit.dev-tang.com/skin/ukv3/js/clipboard.min.js" defer=""></script>
+    <script src="http://getuikit.dev-tang.com/skin/ukv3/js/uikit.min.js"></script>
+    <script src="http://getuikit.dev-tang.com/skin/ukv3/js/uikit-icons.min.js"></script>
+    <script src="http://getuikit.dev-tang.com/skin/ukv3/js/highlight.min.js"></script>
+
+{#头部结束#}
+<body style="background-image: url( {% static 'bg.png' %} )">
+
+		<div uk-height-viewport class="uk-section uk-section-small uk-flex uk-flex-middle uk-text-center" style="min-height: calc((100vh - 80px) - 0px);">
+
+							<div class="uk-width-1-1">
+                                <div class="uk-flex uk-flex-center">
+                                    <h2>
+                                        注册
+                                    </h2>
+                                </div>
+								<div class="uk-container" style="max-width: 500px;">
+
+
+
+{#                                    表单开始#}
+
+                                    {% include 'tuser/forms/registerform.html' %}
+
+{#                                    表单结束#}
+                                    <div class="uk-margin">
+                        <div class="uk-inline">
+                            <a href="{% url 'user:login' %}">前往登录</a>
+                        </div>
+                    </div>
+								</div>
+							</div>
+						</div>
+	</body>
+
+</html>

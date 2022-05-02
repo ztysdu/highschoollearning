@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}
+知识点
+{% endblock %}
+
+{% block page_title %}
+知识点
+{% endblock %}
+
+{% block main %}
+    <div class="uk-card uk-card-default uk-card-body uk-margin-remove" >
+    <div style="min-height: 700px;">
+    {% for object in object_list %}
+    <div class="uk-card uk-card-default uk-card-body" style="padding: 15px;background: #96d2ff; border-radius: 10px" >
+    <div class="uk-card-badge uk-label uk-label-success">知识点：{{ object.tag.tag_name }}</div>
+    <h3 class="uk-card-title">{{ object.title }}</h3>
+    <div class="uk-flex">
+        <div class="uk-width-5-6 uk-margin-remove-bottom">
+        <p style="display: -webkit-box;  /*将对象作为弹性盒子模型显示*/
+    overflow: hidden; /**/
+    text-overflow:ellipsis;
+    word-break:break-all;
+    -webkit-box-orient:vertical;/*伸缩盒对象的子元素的排列方式-垂直*/
+    -webkit-line-clamp:3; /*限制文本的行数*/" class="uk-margin-remove-bottom">{{ object.content }}</p>
+            </div>
+        <div class="uk-width-1-6 uk-margin-remove-bottom uk-flex uk-flex-right">
+            <div>
+            <button class="uk-button uk-button-primary uk-button-small" uk-tooltip="点击查看视频音频讲解！" uk-toggle="target: #line{{ forloop.counter }}">查看讲解</button>
+                </div>
+            <div id="line{{ forloop.counter }}" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body">
+        <h2 class="uk-modal-title">标题：{{ object.title }}</h2>
+        <span>视频讲解：</span>
+        {% if object.video %}
+        <div class="uk-flex uk-flex-center">
+        <video src="" style="width: 300px; height: 300px"></video>
+        </div>
+        {% else %}
+            非常不好意思,此视频无视频讲解
+        {% endif %}
+        <p>内容：{{ object.content }}</p>
+        <p class="uk-text-right">
+            <button class="uk-button uk-button-primary uk-modal-close"  type="button">确定</button>
+        </p>
+    </div>
+</div>
+        </div>
+    </div>
+</div>
+    {% endfor %}
+</div>
+<div class="uk-flex uk-flex-center">
+    <ul class="uk-pagination" uk-margin>
+        {% if page_obj.has_previous %}
+    <li><a href="{% url 'student:knowledgepoint' %}?page={{ page_obj.previous_page_number }}"><span uk-pagination-previous></span></a></li>
+        {% endif %}
+    {% for page in paginator.page_range %}
+        {% if page == page_obj.number %}
+            <li class="uk-active"><a href="{% url 'student:knowledgepoint' %}?page={{ page }}">{{ page }}</a></li>
+        {% else %}
+    <li><a href="{% url 'student:knowledgepoint' %}?page={{ page }}">{{ page }}</a></li>
+        {% endif %}
+    {% endfor %}
+    {% if page_obj.has_next %}
+    <li><a href="{% url 'student:knowledgepoint' %}?page={{ page_obj.next_page_number }}"><span uk-pagination-next></span></a></li>
+    {% endif %}
+</ul>
+</div>
+
+</div>
+{% endblock %}

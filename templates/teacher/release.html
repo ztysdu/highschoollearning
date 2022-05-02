@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    发布考试
+{% endblock %}
+
+{% block page_title %}
+发布考试
+{% endblock %}
+
+{% block js %}
+    <script>
+    num = $("input[type='checkbox']:checked").length
+    $('#count').html(num)
+    $(":input").click(function () {
+        num = $("input[type='checkbox']:checked").length
+        $('#count').html(num)
+    })
+</script>
+{% endblock %}
+
+{% block main %}
+
+<div class="uk-card uk-card-body uk-card-default uk-padding-remove-top" style="min-height: 800px">
+            <div class="uk-flex uk-flex-center">
+                <h2 class="uk-margin-remove-top">发布考试 </h2>
+            </div>
+            <div class="uk-flex-center uk-flex">
+                <form action="{% url 'teacher:release' %}" method="post" class="uk-form-horizontal ">{% csrf_token %}
+        <div class="uk-flex uk-flex-center">
+        <div>
+        {{ form.errors }}
+            {% for field in form %}
+    <div class="">
+    <div class="uk-margin">
+    <label class="uk-form-label" for="pwdprotect">{{ field.label }}</label>
+        <div class="uk-form-controls">
+         {{ field }}
+    </div>
+</div>
+    </div>
+{% endfor %}
+</div>
+        </div>
+                <hr class="uk-divider-icon">
+        <div class="uk-flex-center uk-flex">
+        <p>
+            <span>已选试题数量：</span><span id="count"></span>
+        </p>
+    </div>
+                    <br>
+                <div class="uk-flex uk-flex-center">
+                    <div>
+        <ul class="uk-subnav uk-subnav-pill" uk-switcher>
+            {% for testpaper in testpapers %}
+            <li><a href="#">{{ testpaper.test_paper_name }}</a></li>
+            {% endfor %}
+        </ul>
+
+        <ul class="uk-switcher uk-margin">
+        {% for testpaper in testpapers %}
+            <li>
+                <div class="uk-flex uk-flex-center uk-margin-remove-bottom">
+                        <p class="uk-margin-remove-bottom" style="font-size: 22px">考试真题</p>
+                    </div>
+                {% for i in testpaper.examinationquestion_set.all %}
+                <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid" style="font-size: 20px">
+
+                    <label><input class="uk-checkbox" type="checkbox" name="question" value="{{ i.id }}" > &nbsp;{{ forloop.counter }}.  {{ i.question_content }}</label>
+
+                </div>
+                {% endfor %}
+            </li>
+        {% endfor %}
+            <li>Hello again!</li>
+            <li>Bazinga!</li>
+            <li>Hello again!</li>
+            <li>Bazinga!</li>
+        </ul>
+    </div>
+                </div>
+
+
+
+        <div>
+            <button class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom">提交</button>
+        </div>
+        </form>
+            </div>
+        </div>
+{% endblock %}

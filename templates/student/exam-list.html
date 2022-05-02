@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load  myfilter %}
+
+{% block title %}
+    考试列表
+{% endblock %}
+
+{% block main %}
+    <div class="uk-card uk-card-default uk-card-body uk-margin-remove" >
+    <div style="min-height: 700px;">
+    {% for object in page_obj %}
+    <div class="uk-card uk-card-default uk-card-body uk-margin-small-bottom" style="padding: 15px;background: #96d2ff; border-radius: 10px" >
+    <h3 class="uk-card-title">{{ object.exam_name }}</h3>
+    <div class="uk-flex">
+        <div class="uk-width-5-6 uk-margin-remove-bottom">
+        <p style="display: -webkit-box;  /*将对象作为弹性盒子模型显示*/
+    overflow: hidden; /**/
+    text-overflow:ellipsis;
+    word-break:break-all;
+    -webkit-box-orient:vertical;/*伸缩盒对象的子元素的排列方式-垂直*/
+    -webkit-line-clamp:3; /*限制文本的行数*/" class="uk-margin-remove-bottom">起始时间：{{ object.start_time }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;截止时间：{{ object.end_time }}</p>
+            </div>
+        <div class="uk-width-1-6 uk-margin-remove-bottom uk-flex uk-flex-right">
+            {% if object.examrecord_set.all.0 %}
+                <div>
+            <button class="uk-button uk-button-primary uk-button-small" disabled>您已参加过此考试</button>
+                </div>
+                {% elif object.start_time|equal %}
+                            <div>
+            <button class="uk-button uk-button-primary uk-button-small" disabled >考试未开始</button>
+                </div>
+                {% elif object.end_time|equal %}
+                            <div>
+            <button class="uk-button uk-button-primary uk-button-small" ><a style="color: white" href="{% url 'student:examdo' object.id %}">开始考试</a></button>
+                </div>
+
+            {% else %}
+                <div>
+            <button class="uk-button uk-button-primary uk-button-small" disabled>考试已过期</button>
+                </div>
+            {% endif %}
+            </div>
+</div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+</div>
+<div class="uk-flex uk-flex-center">
+    <ul class="uk-pagination" uk-margin>
+        {% if page_obj.has_previous %}
+    <li><a href="{% url 'student:examlist' %}?page={{ page_obj.previous_page_number }}"><span uk-pagination-previous></span></a></li>
+        {% endif %}
+    {% for page in paginator.page_range %}
+        {% if page == page_obj.number %}
+            <li class="uk-active"><a href="{% url 'student:examlist' %}?page={{ page }}">{{ page }}</a></li>
+        {% else %}
+    <li><a href="{% url 'student:examlist' %}?page={{ page }}">{{ page }}</a></li>
+        {% endif %}
+    {% endfor %}
+    {% if page_obj.has_next %}
+    <li><a href="{% url 'student:examlist' %}?page={{ page_obj.next_page_number }}"><span uk-pagination-next></span></a></li>
+    {% endif %}
+</ul>
+</div>
+
+</div>
+{% endblock %}

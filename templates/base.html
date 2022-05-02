@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'css/uikit.min.css' %}" />
+    <script src="{% static 'js/uikit.min.js' %}"></script>
+    <script src="{% static 'js/uikit-icons.min.js' %}"></script>
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <style type="text/css">
+        @media (min-width: 639px) {
+            .sidebar {
+                position: fixed;
+                top: 0;
+                bottom: 0;
+                box-sizing: border-box;
+                width: 240px !important;
+                padding: 30px 30px 60px 30px;
+                background: #223e9c;
+                overflow: auto;
+            }
+            .main {
+                padding: 0px 20px 0 260px;
+            }
+        }
+    </style>
+</head>
+<body>
+{% include 'components/sidebar.html' %}
+
+<div class="uk-container uk-container-expand uk-background-muted main" uk-height-viewport>
+    <div class="uk-section uk-section-xsmall uk-padding-remove-top">
+
+        {% include 'components/header.html' %}
+        {% block main %}
+        <div class="uk-card uk-card-body uk-card-default uk-padding-remove-top" style="min-height: 800px">
+            <div class="uk-flex uk-flex-center">
+                <h2 class="uk-margin-remove-top">{% block page_title %} {% endblock %}</h2>
+            </div>
+        </div>
+        {% endblock %}
+
+    </div>
+</div>
+{% block js %}
+{% endblock %}
+<script>
+            {% if messages %}
+            {% for message in messages %}
+    UIkit.notification({message: '{{ message }}', status: 'success'})
+            {% endfor %}
+        {% endif %}
+</script>
+</body>
+</html>

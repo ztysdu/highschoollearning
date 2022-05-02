@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}
+错题集
+{% endblock %}
+
+{% block page_title %}
+错题集
+{% endblock %}
+
+{% block main %}
+    <div class="uk-card uk-card-default uk-card-body uk-margin-remove" >
+    <div style="min-height: 700px;">
+    {% for object in page_obj %}
+    <div class="uk-card uk-card-default uk-card-body uk-margin-small-bottom" style="padding: 15px;background: #96d2ff; border-radius: 10px;" >
+    <h3 class="uk-card-title">{{ object.exam.exam_name }}</h3>
+    <div class="uk-flex">
+        <div class="uk-width-5-6 uk-margin-remove-bottom">
+        <p>考试正确率：{{ object.correct_rate }}</p>
+            </div>
+        <div class="uk-width-1-6 uk-margin-remove-bottom uk-flex uk-flex-right">
+            <div>
+            <button class="uk-button uk-button-primary uk-button-small" uk-tooltip="点击查看视频音频讲解！" uk-toggle="target: #line{{ forloop.counter }}">查看记录</button>
+                </div>
+            <div id="line{{ forloop.counter }}" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body">
+        <h2 class="uk-modal-title">考试名：{{ object.exam.exam_name }}</h2>
+        {% for i in object.wrong.all %}
+
+        <p>{{ forloop.counter }}. {{ i.question_content }}</p>
+            <p>答案：{{ i.answer }}</p>
+            <p>解析：{{ i.explain }}</p>
+            {% endfor %}
+        <p class="uk-text-right">
+            <button class="uk-button uk-button-primary uk-modal-close"  type="button">确定</button>
+        </p>
+    </div>
+</div>
+        </div>
+    </div>
+</div>
+    {% endfor %}
+</div>
+<div class="uk-flex uk-flex-center">
+    <ul class="uk-pagination" uk-margin>
+        {% if page_obj.has_previous %}
+    <li><a href="{% url 'student:wrong' %}?page={{ page_obj.previous_page_number }}"><span uk-pagination-previous></span></a></li>
+        {% endif %}
+    {% for page in paginator.page_range %}
+        {% if page == page_obj.number %}
+            <li class="uk-active"><a href="{% url 'student:wrong' %}?page={{ page }}">{{ page }}</a></li>
+        {% else %}
+    <li><a href="{% url 'student:wrong' %}?page={{ page }}">{{ page }}</a></li>
+        {% endif %}
+    {% endfor %}
+    {% if page_obj.has_next %}
+    <li><a href="{% url 'student:wrong' %}?page={{ page_obj.next_page_number }}"><span uk-pagination-next></span></a></li>
+    {% endif %}
+</ul>
+</div>
+
+</div>
+{% endblock %}
